@@ -12,11 +12,27 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DemoCSVExtension.Helper\DemoCSVExtension.Helper.csproj" />
     <ProjectReference Include="..\DemoSignatures.Helper\DemoSignatures.Helper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Assets\Curriculum vitae.odt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Demo3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\DemoConsoleApp.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\demo_image1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\Documento de Prueba.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\ExcelPrueba.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\FromLayersToVerticalSlices es.pdf">

@@ -34,40 +34,41 @@ public abstract class FileType
                 headerBytes.Take(signature.Length).SequenceEqual(signature))
         };
     }
-
-    private List<FileFormat> FindMatchingFormats(Stream stream)
-    {
-        var candidates = _formats
-            .OrderBy(t => t.HeaderLength)
-            .ToList();
-
-        for (int i = 0; i < candidates.Count; i++)
-        {
-            if (!candidates[i].IsMatch(stream))
-            {
-                candidates.RemoveAt(i);
-                i--;
-            }
-        }
-
-        if (candidates.Count > 1)
-        {
-            var readers = candidates.OfType<IFileFormatReader>().ToList();
-
-            if (readers.Any())
-            {
-                var file = readers[0].Read(stream);
-                foreach (var reader in readers)
-                {
-                    if (!reader.IsMatch(file))
-                    {
-                        candidates.Remove((FileFormat)reader);
-                    }
-                }
-            }
-        }
-
-        stream.Position = 0;
-        return candidates;
-    }
 }
+
+//    private List<FileFormat> FindMatchingFormats(Stream stream)
+//    {
+//        var candidates = _formats
+//            .OrderBy(t => t.HeaderLength)
+//            .ToList();
+
+//        for (int i = 0; i < candidates.Count; i++)
+//        {
+//            if (!candidates[i].IsMatch(stream))
+//            {
+//                candidates.RemoveAt(i);
+//                i--;
+//            }
+//        }
+
+//        if (candidates.Count > 1)
+//        {
+//            var readers = candidates.OfType<IFileFormatReader>().ToList();
+
+//            if (readers.Any())
+//            {
+//                var file = readers[0].Read(stream);
+//                foreach (var reader in readers)
+//                {
+//                    if (!reader.IsMatch(file))
+//                    {
+//                        candidates.Remove((FileFormat)reader);
+//                    }
+//                }
+//            }
+//        }
+
+//        stream.Position = 0;
+//        return candidates;
+//    }
+//}

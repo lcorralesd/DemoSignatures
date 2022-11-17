@@ -15,6 +15,7 @@ public static class FileTypeVerifier
     {
         Name = "Unknown",
         Description = "Unknown File Type",
+        Extension= "Unknown",
         IsVerified= false,
     };
 
@@ -24,12 +25,13 @@ public static class FileTypeVerifier
         {
             new Bmp(),
             new CompoundBinary(),
+            new Csv(),
             new Jpeg(),
             new Mp3(),
+            new Odt(),
             new OpenXML(),
             new Pdf(),
             new Png(),
-            new Txt(),
             new Zip(),
         }.OrderByDescending(x => x.SignatureLength).ToList();
     }
@@ -37,7 +39,7 @@ public static class FileTypeVerifier
     public static FileTypeVerifyResult Match(string path)
     {
         using var file = File.OpenRead(path);
-        FileTypeVerifyResult result = null;
+        FileTypeVerifyResult? result = null;
 
         foreach (var fileType in Types)
         {

@@ -5,7 +5,7 @@ public class Mp3 : FileType
     {
         Name = "MP3";
         Description = "MP3 Audio File";
-        AddExtensions("mp3");
+        AddExtensions(".mp3");
         AddSignatures(new byte[] { 0x49, 0x44, 0x33 });
     }
 }

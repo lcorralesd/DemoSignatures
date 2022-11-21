@@ -12,7 +12,7 @@ public  class Jpeg : FileType
         Name = "JPEG";
         Description = "JPEG IMAGE";
         MediaType = "image/jpeg";
-        AddExtensions("jpeg", "jpg");
+        AddExtensions(".jpeg", ".jpg");
         AddSignatures(
             new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
             new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },

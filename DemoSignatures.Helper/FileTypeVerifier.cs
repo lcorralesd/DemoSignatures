@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DemoSignatures.Helper;
 public class FileTypeVerifier : IFileTypeVerifier
 {
+    private const string CSV_PATTERN = "(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\"\\,\\r\\n]*))";
     private IEnumerable<FileType> Types { get; set; }
 
-
-    private FileTypeVerifyResult Unknown = new FileTypeVerifyResult
+    private readonly FileTypeVerifyResult Unknown = new FileTypeVerifyResult
     {
         Name = "Unknown",
         Description = "Unknown File Type",
@@ -24,10 +25,9 @@ public class FileTypeVerifier : IFileTypeVerifier
         Types = new List<FileType>
         {
             new CompoundBinary(),
-            new Csv(),
+            //new Csv(),
             new Jpeg(),
             new Mp4(),
-            new M4a(),
             new OpenXML(),
             new Pdf(),
             new Png(),
@@ -35,32 +35,47 @@ public class FileTypeVerifier : IFileTypeVerifier
         }.OrderByDescending(x => x.SignatureLength).ToList();
     }
 
-    public FileTypeVerifyResult Match(string path)
+    public FileTypeVerifyResult Match(string path, string extension)
     {
-        FileStream file;
-        FileTypeVerifyResult? result;
-        VerifyType(path, out file, out result);
+        VerifyType(path, extension, out _, out FileTypeVerifyResult? result);
 
         return result?.IsVerified == true ? result : Unknown;
     }
 
-    public bool IsMatch(string path)
+    public bool IsMatch(string path, string extension)
     {
-        FileStream file;
-        FileTypeVerifyResult? result;
-        VerifyType(path, out file, out result);
+        bool result;
+        if (extension.Equals(".csv"))
+        {
+            result = CsvValidationRegularExpression(path);
+        }
+        else
+        {
+            VerifyType(path, extension, out _, out FileTypeVerifyResult? varifyResult);
 
-        return result?.IsVerified == true ? true : false;
+            result = varifyResult?.IsVerified == true;
+        }
+
+        return result;
     }
 
-    private void VerifyType(string path, out FileStream file, out FileTypeVerifyResult? result)
+    private void VerifyType(string path, string extension, out FileStream file, out FileTypeVerifyResult? result)
     {
         file = File.OpenRead(path);
+        
         result = null;
         foreach (var fileType in Types)
         {
-            result = fileType.Verify(file)!;
-            if (result.IsVerified) break;
+            result = fileType.Verify(file, extension)!;
+            if (result.IsVerified)
+            {
+                break;
+            }
         }
+    }
+
+    private bool CsvValidationRegularExpression(string path)
+    {
+        return Regex.IsMatch(path, CSV_PATTERN);
     }
 }

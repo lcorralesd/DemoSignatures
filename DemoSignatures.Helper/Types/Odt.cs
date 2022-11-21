@@ -11,7 +11,7 @@ public class Odt : FileType
 	{
         Name = "Odt";
         Description = "Odt File";
-        AddExtensions("odt");
+        AddExtensions(".odt");
         AddSignatures(new byte[] { 0x50, 0x4B, 0x03, 0x04, 0x14, 0x00, 0x00, 0x08 });
     }
 }

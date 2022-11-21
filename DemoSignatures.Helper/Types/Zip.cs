@@ -11,7 +11,7 @@ public class Zip : FileType
 	{
 		Name = "ZIP";
 		Description = "ZIP File";
-		AddExtensions("zip");
+		AddExtensions(".zip");
 		AddSignatures(new byte[] { 0x50, 0x4B, 0x03, 0x04 });
 	}
 }

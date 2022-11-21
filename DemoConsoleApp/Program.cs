@@ -11,7 +11,6 @@ var assets = new[]
             "Demo3.jpg",
             "ExcelPrueba.csv",
             "Video.mp4",
-            "Video2.m4a",
             "Prueba.csv",
             "Predia Monica.pdf",
             "Libro1.xls"
@@ -24,7 +23,7 @@ Console.WriteLine("\nFile Verification Results\n");
 foreach (var asset in assets)
 {
     var path = Path.Combine("./assets", asset);
-    var result = verifier.IsMatch(path);
+    var result = verifier.IsMatch(path, Path.GetExtension(path));
     Console.WriteLine($"{asset} is {result} ");
 }
 

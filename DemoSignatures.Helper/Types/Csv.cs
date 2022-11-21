@@ -11,7 +11,7 @@ public class Csv : FileType
 	{
 		Name = "CSV";
 		Description = "CSV file type";
-		AddExtensions("csv");
+		AddExtensions(".csv");
 		AddSignatures(new byte[] { 0xEF, 0xBB, 0xBF });
 	}
 }

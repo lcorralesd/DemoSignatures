@@ -6,29 +6,28 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DemoSignatures.Helper;
-public static class FileTypeVerifier
+public class FileTypeVerifier : IFileTypeVerifier
 {
-    private static IEnumerable<FileType> Types { get;set; }
+    private IEnumerable<FileType> Types { get; set; }
 
 
-    private static FileTypeVerifyResult Unknown = new FileTypeVerifyResult
+    private FileTypeVerifyResult Unknown = new FileTypeVerifyResult
     {
         Name = "Unknown",
         Description = "Unknown File Type",
-        Extension= "Unknown",
-        IsVerified= false,
+        Extension = "Unknown",
+        IsVerified = false,
     };
 
-    static FileTypeVerifier()
+    public FileTypeVerifier()
     {
-        Types = new List<FileType> 
+        Types = new List<FileType>
         {
-            new Bmp(),
             new CompoundBinary(),
             new Csv(),
             new Jpeg(),
-            new Mp3(),
-            new Odt(),
+            new Mp4(),
+            new M4a(),
             new OpenXML(),
             new Pdf(),
             new Png(),
@@ -36,17 +35,32 @@ public static class FileTypeVerifier
         }.OrderByDescending(x => x.SignatureLength).ToList();
     }
 
-    public static FileTypeVerifyResult Match(string path)
+    public FileTypeVerifyResult Match(string path)
     {
-        using var file = File.OpenRead(path);
-        FileTypeVerifyResult? result = null;
+        FileStream file;
+        FileTypeVerifyResult? result;
+        VerifyType(path, out file, out result);
 
+        return result?.IsVerified == true ? result : Unknown;
+    }
+
+    public bool IsMatch(string path)
+    {
+        FileStream file;
+        FileTypeVerifyResult? result;
+        VerifyType(path, out file, out result);
+
+        return result?.IsVerified == true ? true : false;
+    }
+
+    private void VerifyType(string path, out FileStream file, out FileTypeVerifyResult? result)
+    {
+        file = File.OpenRead(path);
+        result = null;
         foreach (var fileType in Types)
         {
-            result = fileType.Verify(file);
+            result = fileType.Verify(file)!;
             if (result.IsVerified) break;
         }
-
-        return result?.IsVerified == true? result : Unknown;
     }
 }

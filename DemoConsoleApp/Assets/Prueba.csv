@@ -1,0 +1,3 @@
+"FirstName","LastName","Address","Phone","BirthDay","Salary","IsActive"
+"Jose, Maria","Perez","Calle 3 lote 5",N/A,1/1/1980,10000.05,True
+"Pedro","Diaz","Calle, 4 lote 8",N/A,12/31/1990,50000.85,False

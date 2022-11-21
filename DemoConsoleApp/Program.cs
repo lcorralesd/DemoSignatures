@@ -8,28 +8,24 @@ using System.Globalization;
 
 var assets = new[]
         {
-            "FromLayersToVerticalSlices es.pdf",
-            "FromLayersToVerticalSlices.zip",
+            "Demo3.jpg",
+            "ExcelPrueba.csv",
+            "Video.mp4",
+            "Video2.m4a",
+            "Prueba.csv",
             "Predia Monica.pdf",
-            "TextFile1.txt",
-            "Libro1.xls",
-            "Documento de Prueba.docx",
-            "perfil.jpg",
-            "Curriculum vitae.odt",
-            "demo_image1.jpg",
-            "demo3.jpg",
-            "ExcelPrueba.csv",
-            "ExcelPrueba.csv",
-            "DemoConsoleApp.pdf"
+            "Libro1.xls"
         };
+
+FileTypeVerifier verifier = new FileTypeVerifier();
 
 Console.WriteLine("\nFile Verification Results\n");
 // Identify the file by bytes
 foreach (var asset in assets)
 {
     var path = Path.Combine("./assets", asset);
-    var result = FileTypeVerifier.Match(path);
-    Console.WriteLine($"{asset} is a {result.Name} ({result.Description}).");
+    var result = verifier.IsMatch(path);
+    Console.WriteLine($"{asset} is {result} ");
 }
 
 //var personList = new List<Person>

@@ -32,6 +32,9 @@
     <None Update="Assets\Prueba.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\Prueba_mala.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\Video.mp4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

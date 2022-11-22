@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace DemoSignatures.Helper;
 public class FileTypeVerifier : IFileTypeVerifier
 {
-    private const string CSV_PATTERN = "(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\"\\,\\r\\n]*))";
+    private const string pattern = ",?\".+?\"|[^\"]+?(?=,)|[^\"]+";
     private IEnumerable<FileType> Types { get; set; }
 
     private readonly FileTypeVerifyResult Unknown = new FileTypeVerifyResult
@@ -74,8 +74,8 @@ public class FileTypeVerifier : IFileTypeVerifier
         }
     }
 
-    private bool CsvValidationRegularExpression(string path)
+    private static bool CsvValidationRegularExpression(string path)
     {
-        return Regex.IsMatch(path, CSV_PATTERN);
+        return Regex.IsMatch(path, pattern, RegexOptions.Multiline);
     }
 }

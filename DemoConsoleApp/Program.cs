@@ -9,6 +9,7 @@ using System.Globalization;
 var assets = new[]
         {
             "Demo3.jpg",
+            "Prueba_mala.csv",
             "ExcelPrueba.csv",
             "Video.mp4",
             "Prueba.csv",

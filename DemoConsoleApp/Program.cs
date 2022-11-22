@@ -24,7 +24,7 @@ Console.WriteLine("\nFile Verification Results\n");
 foreach (var asset in assets)
 {
     var path = Path.Combine("./assets", asset);
-    var result = verifier.IsMatch(path, Path.GetExtension(path));
+    var result = verifier.IsMatch(path);
     Console.WriteLine($"{asset} is {result} ");
 }
 

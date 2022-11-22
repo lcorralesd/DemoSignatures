@@ -25,7 +25,6 @@ public class FileTypeVerifier : IFileTypeVerifier
         Types = new List<FileType>
         {
             new CompoundBinary(),
-            //new Csv(),
             new Jpeg(),
             new Mp4(),
             new OpenXML(),
@@ -35,23 +34,23 @@ public class FileTypeVerifier : IFileTypeVerifier
         }.OrderByDescending(x => x.SignatureLength).ToList();
     }
 
-    public FileTypeVerifyResult Match(string path, string extension)
+    public FileTypeVerifyResult Match(string path)
     {
-        VerifyType(path, extension, out _, out FileTypeVerifyResult? result);
+        VerifyType(path, out _, out FileTypeVerifyResult? result);
 
         return result?.IsVerified == true ? result : Unknown;
     }
 
-    public bool IsMatch(string path, string extension)
+    public bool IsMatch(string path)
     {
         bool result;
-        if (extension.Equals(".csv"))
+        if (Path.GetExtension(path).Equals(".csv"))
         {
             result = CsvValidationRegularExpression(path);
         }
         else
         {
-            VerifyType(path, extension, out _, out FileTypeVerifyResult? varifyResult);
+            VerifyType(path, out _, out FileTypeVerifyResult? varifyResult);
 
             result = varifyResult?.IsVerified == true;
         }
@@ -59,19 +58,21 @@ public class FileTypeVerifier : IFileTypeVerifier
         return result;
     }
 
-    private void VerifyType(string path, string extension, out FileStream file, out FileTypeVerifyResult? result)
+    private void VerifyType(string path, out FileStream file, out FileTypeVerifyResult? result)
     {
         file = File.OpenRead(path);
         
         result = null;
         foreach (var fileType in Types)
         {
-            result = fileType.Verify(file, extension)!;
+            result = fileType.Verify(file, Path.GetExtension(path))!;
             if (result.IsVerified)
             {
                 break;
             }
         }
+
+        file.Close();
     }
 
     private static bool CsvValidationRegularExpression(string path)

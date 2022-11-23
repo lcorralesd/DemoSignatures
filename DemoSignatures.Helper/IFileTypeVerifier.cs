@@ -2,6 +2,6 @@
 
 public interface IFileTypeVerifier
 {
-    FileTypeVerifyResult Match(string path);
+    //FileTypeVerifyResult Match(string path);
     bool IsMatch(string path);
 }

@@ -8,13 +8,15 @@ using System.Globalization;
 
 var assets = new[]
         {
-            "Demo3.jpg",
+            //"Demo3.jpg",
             "Prueba_mala.csv",
-            "ExcelPrueba.csv",
-            "Video.mp4",
-            "Prueba.csv",
-            "Predia Monica.pdf",
-            "Libro1.xls"
+            //"ExcelPrueba.csv",
+            //"Video.mp4",
+            //"Prueba.csv",
+            "Vacio.pdf",
+            "DemoConsoleApp.csv"
+            //"Predia Monica.pdf",
+            //"Libro1.xls"
         };
 
 FileTypeVerifier verifier = new FileTypeVerifier();
@@ -23,7 +25,7 @@ Console.WriteLine("\nFile Verification Results\n");
 // Identify the file by bytes
 foreach (var asset in assets)
 {
-    var path = Path.Combine("./assets", asset);
+    var path = Path.Combine("D:\\Assets", asset);
     var result = verifier.IsMatch(path);
     Console.WriteLine($"{asset} is {result} ");
 }

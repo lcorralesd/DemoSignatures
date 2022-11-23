@@ -1,6 +1,6 @@
 ﻿namespace DemoSignatures.Core.Application.DownloadService.Command;
 
-public partial class SaveFileToDownloadCommandHandler
+public partial class GetStreamToDownloadQueryHandler
 {
     public static class MimeTypes
     {

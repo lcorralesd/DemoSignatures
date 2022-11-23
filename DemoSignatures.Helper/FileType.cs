@@ -24,22 +24,24 @@ public abstract class FileType
 
     public FileTypeVerifyResult? Verify(Stream stream, string extension)
     {
-        FileTypeVerifyResult? result = null;
+        FileTypeVerifyResult? result;
+
         if (stream == null || Offset > stream.Length)
         {
-            result = null;
+            return null;
         }
 
         stream!.Position = Offset;
         var reader = new BinaryReader(stream);
         var headerBytes = reader.ReadBytes(SignatureLength);
-        result = new FileTypeVerifyResult
+        var typeResult = new FileTypeVerifyResult
         {
+            IsExtensionMatch = Extensions.Any(x => x.Contains(extension.ToLower())),
             IsVerified = Signatures.Any(signature =>
-                headerBytes.Take(signature.Length).SequenceEqual(signature) &&
-                Extensions.Any(x => x.Contains(extension.ToLower())))
+                headerBytes.Take(signature.Length).SequenceEqual(signature))
         };
 
+        result = typeResult;
         return result;
     }
 }

@@ -8,11 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Spectre.Console" Version="0.45.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DemoCSVExtension.Helper\DemoCSVExtension.Helper.csproj" />
     <ProjectReference Include="..\DemoSignatures.Helper\DemoSignatures.Helper.csproj" />
   </ItemGroup>
 

@@ -20,14 +20,13 @@ public class FileTypeVerifier : IFileTypeVerifier
         Types = new List<FileType>
         {
             new CompoundBinary(),
-            new Csv(),
             new Jpeg(),
             new Mp4(),
             new OpenXML(),
             new Pdf(),
             new Png(),
             new Zip(),
-            new Mz()
+            new Mz(),
         }.OrderByDescending(x => x.SignatureLength).ToList();
     }
 
@@ -36,18 +35,18 @@ public class FileTypeVerifier : IFileTypeVerifier
         bool result = false;
         try
         {
-            FileTypeVerifyResult? fileTypeResult = VerifyType(path);
-
-            if (!fileTypeResult.IsVerified && fileTypeResult.IsExtensionMatch)
+            if (Path.GetExtension(path) == ".csv")
             {
-                if (Path.GetExtension(path).Equals(".csv"))
+                if(!VerifyTypeCsv(path))
                 {
                     result = CsvValidationRegularExpression(path);
                 }
             }
             else
             {
-                result = fileTypeResult.IsVerified && fileTypeResult.IsExtensionMatch;
+                FileTypeVerifyResult? fileTypeResult = VerifyType(path);
+
+                result = fileTypeResult!.IsVerified && fileTypeResult.IsExtensionMatch;
             }
         }
         catch (Exception)
@@ -58,10 +57,26 @@ public class FileTypeVerifier : IFileTypeVerifier
         return result;
     }
 
+    private bool VerifyTypeCsv(string path)
+    {
+        var isVerified = false;
+
+        using var file = File.OpenRead(path);
+
+        foreach (var fileType in Types)
+        {
+            isVerified = fileType.VerifySignatureCsv(file);
+            if (isVerified)
+            {
+                break;
+            }
+        }
+        return isVerified;
+    }
+
     private FileTypeVerifyResult? VerifyType(string path)
     {
         FileTypeVerifyResult? result = null;
-
         FileStream file;
         try
         {
@@ -69,9 +84,9 @@ public class FileTypeVerifier : IFileTypeVerifier
             foreach (var fileType in Types)
             {
                 result = fileType.Verify(file, Path.GetExtension(path))!;
-                if(result == null)
+                if (result == null)
                 {
-                    result = new FileTypeVerifyResult 
+                    result = new FileTypeVerifyResult
                     {
                         IsExtensionMatch = true,
                         IsVerified = false
@@ -81,12 +96,13 @@ public class FileTypeVerifier : IFileTypeVerifier
                 {
                     break;
                 }
+
             }
             file.Close();
         }
         catch (Exception ex)
         {
-            throw(ex);
+            throw (ex);
         }
 
         return result;

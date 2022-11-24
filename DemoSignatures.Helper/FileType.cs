@@ -1,4 +1,6 @@
-﻿namespace DemoSignatures.Helper;
+﻿using System.IO;
+
+namespace DemoSignatures.Helper;
 public abstract class FileType
 {
     protected string Description { get; set; }
@@ -20,6 +22,16 @@ public abstract class FileType
     {
         Signatures.AddRange(bytes);
         return this;
+    }
+
+    public bool VerifySignatureCsv(Stream file)
+    {
+        file!.Position = 0;
+        var reader = new BinaryReader(file);
+        var headerBytes = reader.ReadBytes(SignatureLength);
+        var sig = Signatures.Any(signature =>
+                headerBytes.Take(signature.Length).SequenceEqual(signature));
+        return sig;
     }
 
     public FileTypeVerifyResult? Verify(Stream stream, string extension)
